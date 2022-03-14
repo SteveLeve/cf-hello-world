@@ -1,0 +1,23 @@
+stages:
+  - test
+  - build
+  - deploy
+
+lint:
+  stage: test
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/hadolint/hadolint:latest
+  script: "hadolint Dockerfile.*"
+
+docker_build:
+  stage: build
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build --build-arg GITLAB_DEPENDENCY_PROXY=${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX} -f Dockerfile.nginx -t $CI_REGISTRY/candidate1/nginx:latest .
+    - docker build --build-arg GITLAB_DEPENDENCY_PROXY=${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX} -f Dockerfile.cf -t $CI_REGISTRY/candidate1/coldfusion:latest .
+
+docker_deploy:
+  stage: deploy
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY/candidate1/nginx:latest
+    - docker push $CI_REGISTRY/candidate1/coldfusion:latest
