@@ -5,7 +5,7 @@ stages:
 
 lint:
   stage: test
-  image: hadolint/hadolint:latest
+  image: hadolint/hadolint:latest-debian
   script:
     - /bin/hadolint Dockerfile.*
 
