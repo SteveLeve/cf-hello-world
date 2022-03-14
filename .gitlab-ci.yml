@@ -6,7 +6,8 @@ stages:
 lint:
   stage: test
   image: hadolint/hadolint:latest
-  script: "hadolint Dockerfile.*"
+  script:
+    - hadolint Dockerfile.*
 
 docker_build:
   stage: build
