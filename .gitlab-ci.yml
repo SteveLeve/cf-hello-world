@@ -11,7 +11,7 @@ lint:
 
 docker_build:
   stage: build
-  image: docker:latest
+  image: docker:19.03.12
   script:
     - docker build -f Dockerfile.nginx -t $CI_REGISTRY_IMAGE:latest .
 
