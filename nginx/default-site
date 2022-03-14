@@ -1,0 +1,23 @@
+server {
+    listen 80;
+    server_name _;
+
+    root /opt/coldfusion2016/cfusion/wwwroot;
+    index index.cfm index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ^~ /CFIDE/administrator {
+        deny all;
+    }
+
+    location ~* \.(cfm|cfml|cfc|html)$ {
+        include /etc/nginx/conf/dc_tomcat_connector.conf;
+    }
+
+    location ^~ /rest {
+        include tomcatconf;
+    }
+}
