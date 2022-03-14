@@ -15,7 +15,6 @@ before_script:
 stages:
 #  - test
   - build
-  - deploy
 
 #lint:
 #  stage: test
@@ -27,8 +26,4 @@ docker_build:
   stage: build
   script:
     - docker build -f Dockerfile.nginx -t $CI_REGISTRY_IMAGE:latest .
-
-docker_deploy:
-  stage: deploy
-  script:
     - docker push $CI_REGISTRY_IMAGE:latest
