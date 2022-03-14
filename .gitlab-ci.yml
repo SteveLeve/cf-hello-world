@@ -13,12 +13,10 @@ docker_build:
   stage: build
   image: docker:latest
   script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker build --build-arg GITLAB_DEPENDENCY_PROXY=${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX} -f Dockerfile.nginx -t $CI_REGISTRY_IMAGE:latest .
 
 docker_deploy:
   stage: deploy
   image: docker:latest
   script:
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker push $CI_REGISTRY_IMAGE:latest
