@@ -13,15 +13,15 @@ before_script:
   - docker info
 
 stages:
-  - test
+#  - test
   - build
   - deploy
 
-lint:
-  stage: test
-  image: hadolint/hadolint:latest-debian
-  script:
-    - /bin/hadolint Dockerfile.*
+#lint:
+#  stage: test
+#  image: hadolint/hadolint:latest-debian
+#  script:
+#    - /bin/hadolint Dockerfile.*
 
 docker_build:
   stage: build
