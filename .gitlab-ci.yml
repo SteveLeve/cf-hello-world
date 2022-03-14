@@ -13,7 +13,7 @@ docker_build:
   stage: build
   image: docker:latest
   script:
-    - docker build --build-arg GITLAB_DEPENDENCY_PROXY=${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX} -f Dockerfile.nginx -t $CI_REGISTRY_IMAGE:latest .
+    - docker build -f Dockerfile.nginx -t $CI_REGISTRY_IMAGE:latest .
 
 docker_deploy:
   stage: deploy
