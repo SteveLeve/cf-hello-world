@@ -5,7 +5,7 @@ stages:
 
 lint:
   stage: test
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/hadolint/hadolint:latest
+  image: hadolint/hadolint:latest
   script: "hadolint Dockerfile.*"
 
 docker_build:
