@@ -1,5 +1,4 @@
-ARG GITLAB_DEPENDENCY_PROXY
-FROM ${GITLAB_DEPENDENCY_PROXY}/nginx:1.21.6
+FROM nginx:1.21.6
 
 COPY nginx/default-site /etc/nginx/sites-available/default
 COPY nginx/tomcat.conf /etc/nginx/tomcat.conf

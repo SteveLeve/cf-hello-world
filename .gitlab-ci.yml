@@ -1,22 +1,30 @@
-stages:
-  - test
-  - build
-  - deploy
+image: docker:19.03.13
 
-lint:
-  stage: test
-  image: hadolint/hadolint:latest-debian
-  script:
-    - /bin/hadolint Dockerfile.*
+variables:
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs"
+  DOCKER_TLS_VERIFY: 1
+  DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+
+services:
+  - docker:19.03.13-dind
+
+before_script:
+  - docker info
+
+stages:
+#  - test
+  - build
+
+#lint:
+#  stage: test
+#  image: hadolint/hadolint:latest-debian
+#  script:
+#    - /bin/hadolint Dockerfile.*
 
 docker_build:
   stage: build
-  image: docker:latest
   script:
-    - docker build --build-arg GITLAB_DEPENDENCY_PROXY=${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX} -f Dockerfile.nginx -t $CI_REGISTRY_IMAGE:latest .
-
-docker_deploy:
-  stage: deploy
-  image: docker:latest
-  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -f Dockerfile.nginx -t $CI_REGISTRY_IMAGE:latest .
     - docker push $CI_REGISTRY_IMAGE:latest

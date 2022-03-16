@@ -3,6 +3,7 @@
 Here's our entre customer list:<br>
 <cfoutput>
 
+
 <cfquery name="customers" datasource="Customers" username="webuser" password="letmein">
     select *
     from customers
