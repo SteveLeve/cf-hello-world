@@ -1,2 +1,20 @@
 ARG GITLAB_DEPENDENCY_PROXY
-FROM ${GITLAB_DEPENDENCY_PROXY}/adobecoldfusion/coldfusion2018:2018.0.13
+FROM ${GITLAB_DEPENDENCY_PROXY}/ortussolutions/commandbox:adobe2016 as hasSecrets
+
+COPY src/* /app/
+
+ENV FINALIZE_STARTUP true
+RUN "${BUILD_DIR}/run.sh"
+
+FROM adoptopenjdk/openjdk8:debianslim-jre as app
+
+# COPY our generated files
+COPY --from=hasSecrets /app /app
+COPY --from=hasSecrets /usr/local/lib/serverHome /usr/local/lib/serverHome
+
+RUN mkdir -p /usr/local/lib/CommandBox/lib
+
+COPY --from=hasSecrets /usr/local/lib/CommandBox/lib/runwar-4.0.5.jar /usr/local/lib/CommandBox/lib/runwar-4.0.5.jar
+COPY --from=hasSecrets /usr/local/bin/startup-final.sh /usr/local/bin/run.sh
+
+CMD ["/usr/local/bin/run.sh"]
