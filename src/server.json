@@ -1,0 +1,119 @@
+{
+    "name": "",
+    "openBrowser": true,
+    "openBrowserURL" : "http://localhost/admin/login",
+    "startTimeout": 240,
+    "stopsocket": 50123,
+    "debug": false,
+    "trace": false,
+    "console": false,
+    "profile": "prod",
+    "dockEnable": true,
+    "trayEnable": true,
+    "trayicon": "/app/trayicon.png",
+    "env" : {
+      "ANYTHING_HERE" : "you want",
+      "THESE_ARE_ADDED" : "As environment variables to the server"
+    }
+    "trayOptions": [
+        {
+            "label": "Hello",
+            "action": "openbrowser",
+            "url": "http://${runwar.host}:${runwar.port}/index.cfm",
+            "disabled": false,
+            "image": "/app/image.png"
+        }
+    ],
+    "jvm": {
+        "heapSize": 1024,
+        "minHeapSize": 256,
+        "args": "",
+        "javaHome" : "/opt/java/openjdk/bin",
+        "javaVersion" : "openjdk8"
+    },
+    "web": {
+        "host": "127.0.0.1",
+        "webroot": "src/cfml",
+        "directoryBrowsing": true,
+        "accessLogEnable": true,
+        "maxRequests":30,
+        "gzipEnable": true,
+        "gzipPredicate": "regex( '(.*).css' ) and request-larger-than( 500 )",
+        "aliases": {
+            "/js": "/app/static/shared/javascript"
+        },
+        "errorPages": {
+            "404": "/app/404.html",
+            "500": "/app/500.html",
+            "default": "/app/default.html"
+        },
+        "welcomeFiles": "index.cfm,main.cfm,go.cfm",
+        "HTTP": {
+            "enable": true,
+            "port": 8080
+        },
+        "SSL": {
+            "enable": false,
+            "port": 443,
+            "certFile": "",
+            "keyFile": "",
+            "keyPass": "<<SECRET:ssl_key_pass>>"
+        },
+        "AJP": {
+            "enable": false,
+            "port": 8009
+        },
+        "rewrites": {
+            "enable": true,
+            "logEnable": true,
+            "config": "/app/config.xml",
+            "statusPath": "/rewriteStatus",
+            "configReloadSeconds": 60
+        },
+        "basicAuth": {
+            "enable": true,
+            "users": {
+                "userName1": "password1",
+                "userName2": "password2"
+            }
+        },
+        "rules": [
+          "path-suffix(/box.json) -> set-error(404)",
+          "path-prefix(.env) -> set-error(404)",
+          "path-prefix(/admin/) -> ip-access-control(10.2.0.* allow)",
+          "path(/sitemap.xml) -> rewrite(/sitemap.cfm)",
+          "disallowed-methods(trace)"
+        ],
+
+        "rulesFile":"../rules/*.json",
+
+        "blockCFAdmin": false,
+                "blockSensitivePaths":  true,
+                "blockFlashRemoting":  true
+    },
+    "app": {
+        "logDir": "",
+        "libDirs": "",
+        "webConfigDir": "",
+        "serverConfigDir": "/app",
+        "webXML": "",
+        "WARPath": "",
+        "cfengine": "adobe@2016",
+        "restMappings": "/rest/*,/api/*",
+        "serverHomeDirectory": "",
+        "sessionCookieSecure": true,
+        "sessionCookieHTTPOnly": true,
+        "webXMLOverride" : "/app/web.xml",
+        "webXMLOverrideForce" : false
+    },
+    "runwar": {
+        "jarPath": "/usr/local/lib/CommandBox/lib/runwar-4.0.5.jar",
+        "args": "",
+        "XNIOOptions": {
+            "WORKER_NAME": "worker"
+        },
+        "UndertowOptions": {
+            "ALLOW_UNESCAPED_CHARACTERS_IN_URL": true
+        }
+    }
+}
