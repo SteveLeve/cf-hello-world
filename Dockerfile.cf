@@ -4,7 +4,7 @@ FROM ${GITLAB_DEPENDENCY_PROXY}/ortussolutions/commandbox:adobe2016 as hasSecret
 COPY src/* /app/
 
 ENV FINALIZE_STARTUP true
-RUN $BUILD_DIR/run.sh
+RUN "${BUILD_DIR}/run.sh"
 
 FROM adoptopenjdk/openjdk8:debianslim-jre as app
 
@@ -17,4 +17,4 @@ RUN mkdir -p /usr/local/lib/CommandBox/lib
 COPY --from=hasSecrets /usr/local/lib/CommandBox/lib/runwar-4.0.5.jar /usr/local/lib/CommandBox/lib/runwar-4.0.5.jar
 COPY --from=hasSecrets /usr/local/bin/startup-final.sh /usr/local/bin/run.sh
 
-CMD /usr/local/bin/run.sh
+CMD ["/usr/local/bin/run.sh"]
